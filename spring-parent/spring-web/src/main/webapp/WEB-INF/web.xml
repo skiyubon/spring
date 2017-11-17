@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" version="3.0">
+  <display-name>Archetype Created Web Application</display-name>
+  <filter>
+    <filter-name>characterEncodingFilter</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+    <init-param>
+      <param-name>forceEncoding</param-name>
+      <param-value>true</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>characterEncodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+<!--   <context-param>
+    <param-name>log4jConfigLocation</param-name>
+    <param-value>classpath:log4j.properties</param-value>
+  </context-param> -->
+  <context-param>
+    <param-name>webAppRootKey</param-name>
+    <param-value>tomcat_container</param-value>
+  </context-param>
+  <!-- <listener>
+    <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+  </listener> -->
+  <!-- <listener>
+    <listener-class>com.neusoft.messaging.di.ContextListener</listener-class>
+  </listener> -->
+   <listener>
+    <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+  </listener>
+  <servlet>
+    <servlet-name>dispatcher</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>
+      classpath:spring/applicationContext.xml
+      classpath:servlet/servlet-context.xml
+      </param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <!-- shiro 安全过滤器 -->
+    <filter>
+        <filter-name>shiroFilter</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+        <async-supported>true</async-supported>
+        <init-param>
+            <param-name>targetFilterLifecycle</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>shiroFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
+  <filter>
+    <filter-name>DruidWebStatFilter</filter-name>
+    <filter-class>com.alibaba.druid.support.http.WebStatFilter</filter-class>
+    <init-param>
+      <param-name>exclusions</param-name>
+      <param-value>*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>DruidWebStatFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <servlet>
+    <servlet-name>DruidStatView</servlet-name>
+    <servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DruidStatView</servlet-name>
+    <url-pattern>/druid/*</url-pattern>
+  </servlet-mapping>
+  <filter>
+    <filter-name>appBaseFilter</filter-name>
+    <filter-class>com.neusoft.base.filters.AppBaseFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>appBaseFilter</filter-name>
+    <url-pattern>*</url-pattern>
+  </filter-mapping>
+  <servlet-mapping>
+    <servlet-name>dispatcher</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+  <!-- <servlet-mapping>
+    <servlet-name>dispatcher</servlet-name>
+    <url-pattern>*.html</url-pattern>
+  </servlet-mapping> -->
+  
+  <filter>
+   <filter-name>countMetricsFilter</filter-name>
+   <filter-class>com.neusofthuiju.platform.filter.HistogramRequestFilter</filter-class>
+</filter>
+
+<filter-mapping>
+  <filter-name>countMetricsFilter</filter-name>
+  <url-pattern>/*</url-pattern>
+</filter-mapping>
+
+<servlet>
+  <servlet-name>exportjvm</servlet-name>
+  <servlet-class>com.neusofthuiju.platform.servlet.MetricsServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+  <servlet-name>exportjvm</servlet-name>
+  <url-pattern>/metrics</url-pattern>
+</servlet-mapping>
+  
+</web-app>
